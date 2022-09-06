@@ -4,21 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-     /* fonction page d accueil user */
-     public function accueilUser(){
-        return view('dashboardUser');
-    }
-
+  
     /* fonction listes des utilisateurs */
     public function accueilAdmin(){
-        $users = User::where('role','=','user')->get();
-        return view('dashboard',[
-            'users' => $users,
-        ]);
+        if(Auth::user()->role == 'user'){
+            return view('dashboardUser');
+        }
+        else{
+            $users = User::where('role','=','user')->orderBy('id', 'DESC')->get();
+            return view('dashboard',[
+                'users' => $users,
+            ]);
+        }
     }
 
     /* function de renvoie au formulaire user */
@@ -41,6 +43,12 @@ class UserController extends Controller
         ]);
         return redirect('/dashboard');
         
+    }
+
+    /* fonction de suppression d un utilisateur */
+    public function delete(User $user){
+        User::find($user)->delete();
+        return redirect('/dashboard');
     }
 
 }

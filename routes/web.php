@@ -19,11 +19,14 @@ Route::get('/', function () {
 });
 
 /* route page d accueil user */
-Route::get('/dashboardUser',[UserController::class,'accueilUser']);
+Route::get('/dashboardUser',[UserController::class,'accueil']);
 
 Route::get('/users/create',[UserController::class,'create'])->name('users.create');
 
 Route::post('/users/create',[UserController::class,'store'])->name('users.store');
+
+Route::delete('/users/{user}',[UserController::class,'delete'])->name('user.delete');
+
 
 /* route page d accueil admin */
 //Route::get('/dashboard',[UserController::class,'accueilAdmin'])->middleware(['auth'])->name('dashboard');

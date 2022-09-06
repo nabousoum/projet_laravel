@@ -5,8 +5,7 @@
         </h2>
     </x-slot>
     <br>
-    <h1 class="text-center mb-2 text-2xl uppercase ">AJouter un utilisateur</h1>
-            <x-jet-validation-errors class="mb-4" />
+    <h1 class="text-center mb-2 text-2xl uppercase text-indigo-800 bold">AJouter un utilisateur</h1>
         <form method="POST" action="{{ route('users.store') }}">
             @csrf
 
