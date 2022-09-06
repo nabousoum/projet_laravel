@@ -22,25 +22,24 @@
             <tr class="bg-gray-50 border">
                 <td> {{ $user->name}} </td>
                 <td> {{ $user->email}} </td>
-                <td>
-                  <a href="">
-                    <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded btn-left">
+                <td class="flex">
+                  <a class="mr-2" href="{{"users/".$user->id}}">
+                    <button class="bg-green-400 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn-left">
                       modifier
                     </button>
                   </a>
-                  <a href="">
-                    <button onclick="if(confirm('Are you sure you want to delete this user?')){document.getElementById('form-{{$user->id}}').submit();}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-left">
+                  <form  action="{{route('user.delete')}}"  method="post">
+                    <button  class="bg-red-400 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-left">
                       supprimer
                     </button>
-                  </a>
-                  <form id="form-{{$user->id}}" action="{{route('user.delete', ['user'=>$user->id])}} "  method="post">
                     @csrf
-                    <input type="hidden" name="_method" value="delete">
+                    <input type="hidden" name="id" value="{{$user->id}}">
                   </form>
                 </td>
             </tr>
             @endforeach  
         </tbody>
       </table>
+    {{ $users->links() }}
   </div>
 </x-app-layout>

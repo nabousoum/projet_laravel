@@ -19,13 +19,7 @@ Route::get('/', function () {
 });
 
 /* route page d accueil user */
-Route::get('/dashboardUser',[UserController::class,'accueil']);
 
-Route::get('/users/create',[UserController::class,'create'])->name('users.create');
-
-Route::post('/users/create',[UserController::class,'store'])->name('users.store');
-
-Route::delete('/users/{user}',[UserController::class,'delete'])->name('user.delete');
 
 
 /* route page d accueil admin */
@@ -43,4 +37,15 @@ Route::middleware(['auth','role:admin'])->group(function(){
     Route::get('/admin', function () {
         return 'Bonjour admin';
     });
+    Route::get('/dashboardUser',[UserController::class,'accueil']);
+
+    Route::get('/users/create',[UserController::class,'create'])->name('users.create');
+
+    Route::post('/users/create',[UserController::class,'store'])->name('users.store');
+
+    Route::get('/users/{id}',[UserController::class,'update'])->name('user.update');
+
+    Route::post('/users/edit',[UserController::class,'edit'])->name('users.update');
+
+    Route::post('/users/delete',[UserController::class,'delete'])->name('user.delete');
 });

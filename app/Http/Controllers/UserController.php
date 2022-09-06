@@ -16,7 +16,7 @@ class UserController extends Controller
             return view('dashboardUser');
         }
         else{
-            $users = User::where('role','=','user')->orderBy('id', 'DESC')->get();
+            $users = User::where('role','=','user')->where('isDelete','=','no')->orderBy('id', 'DESC')->simplePaginate(5);
             return view('dashboard',[
                 'users' => $users,
             ]);
@@ -25,7 +25,9 @@ class UserController extends Controller
 
     /* function de renvoie au formulaire user */
     public function create(){
-        return view('user/form-user');
+        return view('user/form-user',[
+            'user' =>''
+        ]);
     } 
 
     /* fonction d ajout d un utilisateur */
@@ -39,15 +41,38 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make("passer1234"),
-            'role' => 'user'
+            'role' => 'user',
+            'isDelete'=>'no'
         ]);
         return redirect('/dashboard');
         
     }
 
     /* fonction de suppression d un utilisateur */
-    public function delete(User $user){
-        User::find($user)->delete();
+    public function delete(Request $request){
+        $user = User::find($request->id);
+        $user->update([
+            'isDelete'=>'yes',
+        ]);
+        return redirect('/dashboard');
+    }
+
+    /* fonction d edition d un user */
+    public function update($id, Request $request){
+        $user = User::where('id', $id)->first();
+       
+        return view ('user/form-user',[
+            'user'=>$user
+        ]);
+    }
+
+    /* */
+    public function edit(Request $request){
+        $user = User::find($request->id);
+        $user->update([
+            'name'=>$request->name,
+            'email'=>$request->email
+        ]);
         return redirect('/dashboard');
     }
 

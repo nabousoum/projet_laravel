@@ -5,18 +5,26 @@
         </h2>
     </x-slot>
     <br>
-    <h1 class="text-center mb-2 text-2xl uppercase text-indigo-800 bold">AJouter un utilisateur</h1>
-        <form method="POST" action="{{ route('users.store') }}">
+    @if ($user == '' )
+         <h1 class="text-center mb-2 text-2xl uppercase text-indigo-800 bold">Ajouter un utilisateur</h1>
+    @endif
+    @if ($user !== '' )
+        <h1 class="text-center mb-2 text-2xl uppercase text-indigo-800 bold">Modifier un utilisateur</h1>
+    @endif
+    <div>
+        <form method="POST" action="{{ $user=='' ? route('users.store') : route('users.update')}}">
             @csrf
-
+            @if($user!=='')
+                <input type="hidden" name="id" value="{{ $user->id }}" />
+            @endif
             <div>
                 <x-jet-label for="name" value="{{ __('Name') }}" />
-                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{ $user=='' ? old('name') : $user->name }}" required autofocus autocomplete="name" />
             </div>
 
             <div class="mt-4">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" value="{{ $user=='' ? old('email') : $user->email }}" required />
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
@@ -37,13 +45,19 @@
             @endif
 
             <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-jet-button class="ml-4">
-                    {{ __('Register') }}
-                </x-jet-button>
+                @if ($user == '' )
+                    <x-jet-button class="ml-4">
+                         Enregistrer
+                    </x-jet-button>
+                @endif
+                @if ($user !== '' )
+                    <x-jet-button class="ml-4">
+                        Modifier
+                    </x-jet-button>
+                @endif
+                
             </div>
         </form>    
+    </div>
+       
 </x-app-layout>
