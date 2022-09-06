@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -44,6 +45,7 @@ class UserController extends Controller
             'role' => 'user',
             'isDelete'=>'no'
         ]);
+        Alert::success('Message de Success', 'enregistrement de l utilisateur reussi');
         return redirect('/dashboard');
         
     }
@@ -54,6 +56,7 @@ class UserController extends Controller
         $user->update([
             'isDelete'=>'yes',
         ]);
+        Alert::error('Message de Success', 'suppression de l utilisateur reussi');
         return redirect('/dashboard');
     }
 
@@ -73,7 +76,8 @@ class UserController extends Controller
             'name'=>$request->name,
             'email'=>$request->email
         ]);
+        Alert::info('Message de Success', 'modification de l utilisateur reussi');
         return redirect('/dashboard');
     }
-
+    
 }

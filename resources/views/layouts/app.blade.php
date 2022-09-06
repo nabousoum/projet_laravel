@@ -34,6 +34,7 @@
             <main>
                 {{ $slot }}
             </main>
+            @include('sweetalert::alert')
         </div>
 
         @stack('modals')
