@@ -21,6 +21,10 @@ Route::get('/', function () {
 /* route page d accueil user */
 Route::get('/dashboardUser',[UserController::class,'accueilUser']);
 
+Route::get('/users/create',[UserController::class,'create'])->name('users.create');
+
+Route::post('/users/create',[UserController::class,'store'])->name('users.store');
+
 /* route page d accueil admin */
 //Route::get('/dashboard',[UserController::class,'accueilAdmin'])->middleware(['auth'])->name('dashboard');
 

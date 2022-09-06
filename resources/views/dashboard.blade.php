@@ -6,9 +6,12 @@
     </x-slot>
     <br>
     <h1 class="text-center mb-2 text-2xl uppercase ">Liste des utilisateurs</h1>
-    <button class="flex mr-0 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left">
-      Ajouter
-    </button><br>
+    <a href="{{ route('users.create') }}">
+      <button class="ml-10 mr-0 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left">
+        Ajouter
+      </button>
+    </a>
+     <br><br>
   <div class="overflow-x-auto relative">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="bg-gray-50 border-b-2 border-gray-200">
