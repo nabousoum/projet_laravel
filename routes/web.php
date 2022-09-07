@@ -18,19 +18,13 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-/* route page d accueil user */
-
-
-
-/* route page d accueil admin */
-//Route::get('/dashboard',[UserController::class,'accueilAdmin'])->middleware(['auth'])->name('dashboard');
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified'
+    'verified',
 ])->group(function () {
-    Route::get('/dashboard',[UserController::class,'accueilAdmin'])->name('dashboard');
+    Route::get('/dashboard',[UserController::class,'accueil'])->name('dashboard');
 });
 
 Route::middleware(['auth','role:admin'])->group(function(){

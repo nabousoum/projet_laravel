@@ -4,6 +4,17 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
+    {{-- @if ($errors->any())
+    <div>
+        <div class="font-medium text-red-600">{{ __('Whoops! Something went wrong.') }}</div>
+
+        <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif --}}
     <br>
     @if ($user == '' )
          <h1 class="text-center mb-2 text-2xl uppercase text-indigo-800 bold">Ajouter un utilisateur</h1>
@@ -19,12 +30,12 @@
             @endif
             <div>
                 <x-jet-label for="name" value="{{ __('Name') }}" />
-                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{ $user=='' ? old('name') : $user->name }}" required autofocus autocomplete="name" />
+                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{ $user=='' ? old('name') : $user->name }}"  autofocus autocomplete="name" />
             </div>
 
             <div class="mt-4">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" value="{{ $user=='' ? old('email') : $user->email }}" required />
+                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" value="{{ $user=='' ? old('email') : $user->email }}"  />
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
@@ -61,16 +72,3 @@
     </div>
        
 </x-app-layout>
-@if (session()->has('swal_msg'))
-    <script>
-        notification = @json(session()->pull("swal_msg"));
-        swal(notification.title, notification.message, notification.type);
-<!-- 
-    To prevent showing the notification when on browser back
-    we can do: 
--->
-       @php 
-          session()->forget('swal_msg'); 
-       @endphp
-    </script>
-@endif

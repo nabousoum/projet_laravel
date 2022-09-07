@@ -11,13 +11,16 @@ use RealRashid\SweetAlert\Facades\Alert;
 class UserController extends Controller
 {
   
-    /* fonction listes des utilisateurs */
-    public function accueilAdmin(){
+    /* fonction accueil */
+    public function accueil(){
         if(Auth::user()->role == 'user'){
             return view('dashboardUser');
         }
         else{
-            $users = User::where('role','=','user')->where('isDelete','=','no')->orderBy('id', 'DESC')->simplePaginate(5);
+            $users = User::where('role','=','user')
+            ->where('isDelete','=','no')
+            ->orderBy('id', 'DESC')
+            ->simplePaginate(5);
             return view('dashboard',[
                 'users' => $users,
             ]);
@@ -60,7 +63,7 @@ class UserController extends Controller
         return redirect('/dashboard');
     }
 
-    /* fonction d edition d un user */
+    /* fonction d edition d un user get*/
     public function update($id, Request $request){
         $user = User::where('id', $id)->first();
        
@@ -69,7 +72,7 @@ class UserController extends Controller
         ]);
     }
 
-    /* */
+    /* fonction d edition de l utilisateur post*/
     public function edit(Request $request){
         $user = User::find($request->id);
         $user->update([
