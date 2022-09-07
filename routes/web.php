@@ -24,22 +24,22 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard',[UserController::class,'accueil'])->name('dashboard');
+    Route::get('/dashboard', [UserController::class, 'accueil'])->name('dashboard');
 });
 
-Route::middleware(['auth','role:admin'])->group(function(){
+Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', function () {
         return 'Bonjour admin';
     });
-    Route::get('/dashboardUser',[UserController::class,'accueil']);
+    Route::get('/dashboardUser', [UserController::class, 'accueil']);
 
-    Route::get('/users/create',[UserController::class,'create'])->name('users.create');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
 
-    Route::post('/users/create',[UserController::class,'store'])->name('users.store');
+    Route::post('/users/create', [UserController::class, 'store'])->name('users.store');
 
-    Route::get('/users/{id}',[UserController::class,'update'])->name('user.update');
+    Route::get('/users/{id}', [UserController::class, 'update'])->name('user.update');
 
-    Route::post('/users/edit',[UserController::class,'edit'])->name('users.update');
+    Route::post('/users/edit', [UserController::class, 'edit'])->name('users.update');
 
-    Route::post('/users/delete',[UserController::class,'delete'])->name('user.delete');
+    Route::post('/users/delete', [UserController::class, 'delete'])->name('user.delete');
 });
