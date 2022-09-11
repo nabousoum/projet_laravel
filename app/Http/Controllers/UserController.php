@@ -1,11 +1,16 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
+//ini_set('max_execution_time', 600);
+
 use App\Models\User;
+use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
@@ -18,9 +23,8 @@ class UserController extends Controller
         }
         else{
             $users = User::where('role','=','user')
-            ->where('isDelete','=','no')
             ->orderBy('id', 'DESC')
-            ->simplePaginate(5);
+            ->simplePaginate(10);
             return view('dashboard',[
                 'users' => $users,
             ]);
@@ -29,9 +33,11 @@ class UserController extends Controller
 
     /* function de renvoie au formulaire user */
     public function create(){
-        return view('user/form-user',[
-            'user' =>''
+        return view('dashboard',[
+            'user2' =>''
         ]);
+        Alert::info('Message de Success', 'enregistrement de l utilisateur reussi');
+        return redirect('/dashboard');
     } 
 
     /* fonction d ajout d un utilisateur */
@@ -63,11 +69,21 @@ class UserController extends Controller
         return redirect('/dashboard');
     }
 
+    /* fonction de restauration d un utilisateur */
+    public function restore(Request $request){
+        $user = User::find($request->id);
+        $user->update([
+            'isDelete'=>'no',
+        ]);
+        Alert::error('Message de Success', 'restauration de l utilisateur reussi');
+        return redirect('/dashboard');
+    }
+
     /* fonction d edition d un user get*/
     public function update($id, Request $request){
         $user = User::where('id', $id)->first();
        
-        return view ('user/form-user',[
+        return view ('dashboard',[
             'user'=>$user
         ]);
     }
@@ -80,6 +96,14 @@ class UserController extends Controller
             'email'=>$request->email
         ]);
         Alert::info('Message de Success', 'modification de l utilisateur reussi');
+        return redirect('/dashboard');
+    }
+
+    /* insertion en masse avec csv */
+    public function storeCsv(Request $request){
+        $file = $request->file('file');
+        Excel::import(new UsersImport,$file);
+        Alert::info('Message de Success', ' importation du fichier excel reussi');
         return redirect('/dashboard');
     }
     

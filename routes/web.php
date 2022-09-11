@@ -37,9 +37,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::post('/users/create', [UserController::class, 'store'])->name('users.store');
 
+    Route::post('/users/storeCsv', [UserController::class, 'storeCsv'])->name('users.storeCsv');
+
     Route::get('/users/{id}', [UserController::class, 'update'])->name('user.update');
 
     Route::post('/users/edit', [UserController::class, 'edit'])->name('users.update');
 
     Route::post('/users/delete', [UserController::class, 'delete'])->name('user.delete');
+
+    Route::post('/users/restore', [UserController::class, 'restore'])->name('user.restore');
 });
