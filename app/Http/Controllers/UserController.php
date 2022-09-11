@@ -36,7 +36,7 @@ class UserController extends Controller
         return view('dashboard',[
             'user2' =>''
         ]);
-        Alert::info('Message de Success', 'enregistrement de l utilisateur reussi');
+        Alert::info('enregistrement de l utilisateur reussi');
         return redirect('/dashboard');
     } 
 
@@ -54,7 +54,7 @@ class UserController extends Controller
             'role' => 'user',
             'isDelete'=>'no'
         ]);
-        Alert::success('Message de Success', 'enregistrement de l utilisateur reussi');
+        Alert::success('enregistrement de l utilisateur reussi');
         return redirect('/dashboard');
         
     }
@@ -62,10 +62,18 @@ class UserController extends Controller
     /* fonction de suppression d un utilisateur */
     public function delete(Request $request){
         $user = User::find($request->id);
-        $user->update([
-            'isDelete'=>'yes',
-        ]);
-        Alert::error('Message de Success', 'suppression de l utilisateur reussi');
+        if($user->isDelete == "no"){
+            $user->update([
+                'isDelete'=>'yes',
+            ]);
+            Alert::info('suppression de l utilisateur reussi');
+        }
+        else if($user->isDelete == "yes"){
+            $user->update([
+                'isDelete'=>'no',
+            ]);
+            Alert::info('restauration de l utilisateur reussi');
+        }
         return redirect('/dashboard');
     }
 
@@ -75,7 +83,7 @@ class UserController extends Controller
         $user->update([
             'isDelete'=>'no',
         ]);
-        Alert::error('Message de Success', 'restauration de l utilisateur reussi');
+        Alert::error('restauration de l utilisateur reussi');
         return redirect('/dashboard');
     }
 
@@ -95,7 +103,7 @@ class UserController extends Controller
             'name'=>$request->name,
             'email'=>$request->email
         ]);
-        Alert::info('Message de Success', 'modification de l utilisateur reussi');
+        Alert::info('modification de l utilisateur reussi');
         return redirect('/dashboard');
     }
 
@@ -103,7 +111,7 @@ class UserController extends Controller
     public function storeCsv(Request $request){
         $file = $request->file('file');
         Excel::import(new UsersImport,$file);
-        Alert::info('Message de Success', ' importation du fichier excel reussi');
+        Alert::success(' importation du fichier excel reussi');
         return redirect('/dashboard');
     }
     

@@ -1,4 +1,5 @@
 <x-app-layout>
+ 
     <br>
     <h1 class="text-center mb-2 text-2xl uppercase text-indigo-800 bold">Liste des utilisateurs</h1>
       <label for="my-modal" class="btn modal-button ml-10  bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left">Ajouter</label>
@@ -25,27 +26,24 @@
                 <td> {{ $user->name}} </td>
                 <td> {{ $user->email}} </td>
                 <td class="flex">
-                    <button class="showModal bg-green-400 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn-left mr-2">
+                    <button class="showModal btn-outline btn-warning text-white font-bold py-2 px-4 rounded btn-left mr-2">
                       modifier
                     </button>
-                  @if($user->isDelete=="no")
+                  
                     <form  action="{{route('user.delete')}}"  method="post">
-                        <button  class="bg-red-400 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-left">
+                      @if($user->isDelete=="no")
+                        <button  class="btn-outline btn-secondary text-white font-bold py-2 px-4 rounded btn-left">
                           supprimer
                         </button>
+                      @endif
+                      @if($user->isDelete=="yes")
+                        <button  class="btn-outline btn-info text-white font-bold py-2 px-4 rounded btn-left ">
+                          restaurer
+                        </button>
+                      @endif
                       @csrf
                       <input type="hidden" name="id" value="{{$user->id}}">
                     </form>
-                  @endif
-                  @if($user->isDelete=="yes")
-                    <form  action="{{route('user.restore')}}"  method="post">
-                      <button  class="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded btn-left ">
-                        restaurer
-                      </button>
-                      @csrf
-                      <input type="hidden" name="id" value="{{$user->id}}">
-                    </form>
-                @endif
                 </td>
             </tr>
             @endforeach  
@@ -53,7 +51,6 @@
       </table>
     {{ $users->links() }}
   </div>
-
   <!-- Main modal -->
   <input type="checkbox" id="my-modal" class="modal-toggle" />
   <div class="modal">
@@ -67,7 +64,7 @@
         
             <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Ajouter un utilisateur</h3>
       
-            <form method="post" class="space-y-6" action="{{route('users.store')}}">
+            <form method="post" class="space-y-6" action="{{ route('users.store')}}">
               @csrf
               <div>
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Prenom et Nom</label>
@@ -86,5 +83,18 @@
       </div>
     </div>
   </div>
-  
 </x-app-layout>
+  <script>
+
+    const modal = document.querySelector('.modal');
+    const showModal = document.querySelector('.showModal');
+    const closeModal = document.querySelector('.close-modal');
+
+    showModal.addEventListener('click', function(){
+      modal.classList.remove('hidden');
+    })
+
+    closeModal.addEventListener('click', function(){
+      modal.classList.add('hidden');
+    })
+  </script>
