@@ -33,7 +33,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     });
     Route::get('/dashboardUser', [UserController::class, 'accueil']);
 
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('/users/export', [UserController::class, 'exportCsv'])->name('users.export');
 
     Route::post('/users/create', [UserController::class, 'store'])->name('users.store');
 
@@ -45,5 +45,4 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::post('/users/delete', [UserController::class, 'delete'])->name('user.delete');
 
-    Route::post('/users/restore', [UserController::class, 'restore'])->name('user.restore');
 });

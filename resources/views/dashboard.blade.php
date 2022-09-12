@@ -1,15 +1,19 @@
 <x-app-layout>
- 
     <br>
     <h1 class="text-center mb-2 text-2xl uppercase text-indigo-800 bold">Liste des utilisateurs</h1>
-      <label for="my-modal" class="btn modal-button ml-10  bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left">Ajouter</label>
+    <div class="flex justify-around">
+      <label for="my-modal" class="btn modal-button ml-10 mt-10 bg-indigo-500 c:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left"><i class="fa fa-plus mr-2"></i> Ajouter</label>
       <form class="ml-10 mt-10" action="{{route('users.storeCsv')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
           <input type="file" name="file" >
-          <button type="submit" class="ml-10 d-flex justify-content-end  bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left">Import</button>
+          <button type="submit" class="ml-10 d-flex justify-content-end  bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left"><i class="fa fa-copy"></i>  Import</button>
         </div>
       </form>
+      <a href="{{ route('users.export')}}">
+        <button class="h-10  mt-10 justify-content-end  bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left"><i class="fa fa-copy"></i>Export</button>
+      </a>
+    </div>  
      <br><br>
   <div class="overflow-x-auto relative">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -26,19 +30,26 @@
                 <td> {{ $user->name}} </td>
                 <td> {{ $user->email}} </td>
                 <td class="flex">
-                    <button class="showModal btn-outline btn-warning text-white font-bold py-2 px-4 rounded btn-left mr-2">
-                      modifier
+                    @if($user->isDelete=="no")
+                      <label for="my-modal" class=" modal-button btn-outline btn-warning text-white hover:text-white font-bold py-2 px-4 rounded btn-left ">
+                        <i class="fa fa-pen"></i> modifier
+                      </label>
+                    @endif
+                    @if($user->isDelete=="yes")
+                    <button  class="btn-outline btn-warning text-white font-bold py-2 px-4 rounded btn-left">
+                      <i class="fa fa-pen"></i> modifier
                     </button>
-                  
+                    @endif
                     <form  action="{{route('user.delete')}}"  method="post">
                       @if($user->isDelete=="no")
                         <button  class="btn-outline btn-secondary text-white font-bold py-2 px-4 rounded btn-left">
-                          supprimer
+                          <i class="fa fa-trash"></i>  archiver
                         </button>
                       @endif
-                      @if($user->isDelete=="yes")
+                      @if($user->isDelete=="yes") 
+                      
                         <button  class="btn-outline btn-info text-white font-bold py-2 px-4 rounded btn-left ">
-                          restaurer
+                          <i class="fa fa-save"></i>   restaurer
                         </button>
                       @endif
                       @csrf
@@ -56,10 +67,9 @@
   <div class="modal">
     <div class="modal-box">
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal">
-            <svg aria-hidden="true" class="w-5 h-5 close-modal" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-            <span class="sr-only">Close modal</span>
-        </button>
+        <div class="modal-action">
+          <label for="my-modal" class="btn btn-ghost">x</label>
+        </div>
         <div class="py-6 px-6 lg:px-8">
         
             <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Ajouter un utilisateur</h3>

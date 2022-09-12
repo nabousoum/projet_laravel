@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 //ini_set('max_execution_time', 600);
 
 use App\Models\User;
+use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,21 +25,12 @@ class UserController extends Controller
         else{
             $users = User::where('role','=','user')
             ->orderBy('id', 'DESC')
-            ->simplePaginate(10);
+            ->paginate(10);
             return view('dashboard',[
                 'users' => $users,
             ]);
         }
     }
-
-    /* function de renvoie au formulaire user */
-    public function create(){
-        return view('dashboard',[
-            'user2' =>''
-        ]);
-        Alert::info('enregistrement de l utilisateur reussi');
-        return redirect('/dashboard');
-    } 
 
     /* fonction d ajout d un utilisateur */
     public function store(Request $request){
@@ -66,7 +58,7 @@ class UserController extends Controller
             $user->update([
                 'isDelete'=>'yes',
             ]);
-            Alert::info('suppression de l utilisateur reussi');
+            Alert::info('archivage de l utilisateur reussi');
         }
         else if($user->isDelete == "yes"){
             $user->update([
@@ -74,16 +66,6 @@ class UserController extends Controller
             ]);
             Alert::info('restauration de l utilisateur reussi');
         }
-        return redirect('/dashboard');
-    }
-
-    /* fonction de restauration d un utilisateur */
-    public function restore(Request $request){
-        $user = User::find($request->id);
-        $user->update([
-            'isDelete'=>'no',
-        ]);
-        Alert::error('restauration de l utilisateur reussi');
         return redirect('/dashboard');
     }
 
@@ -113,6 +95,11 @@ class UserController extends Controller
         Excel::import(new UsersImport,$file);
         Alert::success(' importation du fichier excel reussi');
         return redirect('/dashboard');
+    }
+
+    /* fonction d exportation du fichier csv */
+    public function exportCsv(){
+        return Excel::download(new UsersExport,'users.pdf',\Maatwebsite\Excel\Excel::DOMPDF);
     }
     
 }
