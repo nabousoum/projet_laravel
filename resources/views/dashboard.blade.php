@@ -6,11 +6,11 @@
         @csrf
         <div class="flex  mt-10">
           <label for="start_date">date debut</label>
-           <input type="date" name="start_date" class="h-10 ml-10" id="start_date" placeholder="Start Date" >  
+           <input type="datetime-local" name="start_date" class="h-10 ml-10" id="start_date" placeholder="Start Date" >  
         </div>
         <div class="flex  mt-10 ml-20">
           <label for="end_date">date fin</label>
-          <input type="date" name="end_date" class="h-10 ml-10" id="end_date" placeholder="End Date" >
+          <input type="datetime-local" name="end_date" class="h-10 ml-10" id="end_date" placeholder="End Date" >
         </div>
       <a href="{{ route('users.export')}}">
         <button type="submit" class="h-10 mt-10 ml-20 justify-content-end  bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left"><i class="fa fa-copy mr-1"></i>Export</button>
