@@ -33,7 +33,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     });
     Route::get('/dashboardUser', [UserController::class, 'accueil']);
 
-    Route::get('/users/export', [UserController::class, 'exportCsv'])->name('users.export');
+    Route::post('/users/export', [UserController::class, 'exportCsv'])->name('users.export');
 
     Route::post('/users/create', [UserController::class, 'store'])->name('users.store');
 

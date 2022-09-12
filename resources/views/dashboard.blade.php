@@ -1,18 +1,31 @@
 <x-app-layout>
     <br>
     <h1 class="text-center mb-2 text-2xl uppercase text-indigo-800 bold">Liste des utilisateurs</h1>
-    <div class="flex justify-around">
+    <div class="flex justify-center">
+      <form class="flex justify-around" method="post" action="{{route('users.export')}}">
+        @csrf
+        <div class="flex  mt-10">
+          <label for="start_date">date debut</label>
+           <input type="date" name="start_date" class="h-10 ml-10" id="start_date" placeholder="Start Date" >  
+        </div>
+        <div class="flex  mt-10 ml-20">
+          <label for="end_date">date fin</label>
+          <input type="date" name="end_date" class="h-10 ml-10" id="end_date" placeholder="End Date" >
+        </div>
+      <a href="{{ route('users.export')}}">
+        <button type="submit" class="h-10 mt-10 ml-20 justify-content-end  bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left"><i class="fa fa-copy mr-1"></i>Export</button>
+      </a>
+    </form>
+  </div>
+    <div class="flex justify-around mt-5">
       <label for="my-modal" class="btn modal-button ml-10 mt-10 bg-indigo-500 c:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left"><i class="fa fa-plus mr-2"></i> Ajouter</label>
       <form class="ml-10 mt-10" action="{{route('users.storeCsv')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-          <input type="file" name="file" >
+          <input type="file" name="file" class="input input-bordered ">
           <button type="submit" class="ml-10 d-flex justify-content-end  bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left"><i class="fa fa-copy"></i>  Import</button>
         </div>
       </form>
-      <a href="{{ route('users.export')}}">
-        <button class="h-10  mt-10 justify-content-end  bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded btn-left"><i class="fa fa-copy"></i>Export</button>
-      </a>
     </div>  
      <br><br>
   <div class="overflow-x-auto relative">
@@ -21,6 +34,7 @@
           <tr class="bg-gray-200 text-indigo-800">
             <th class="p-3 text-sm font-semibold tracking-wide text-left">Prenoms et Nom</th>
             <th class="p-3 text-sm font-semibold tracking-wide text-left">Email</th>
+            <th class="p-3 text-sm font-semibold tracking-wide text-left">Date de creation</th>
             <th class="p-3 text-sm font-semibold tracking-wide text-left">Actions</th>
           </tr>
         </thead>
@@ -29,6 +43,7 @@
             <tr class="bg-gray-50 border">
                 <td> {{ $user->name}} </td>
                 <td> {{ $user->email}} </td>
+                <td> {{ $user->created_at->format('d/m/Y') }} </td>
                 <td class="flex">
                     @if($user->isDelete=="no")
                       <label for="my-modal" class=" modal-button btn-outline btn-warning text-white hover:text-white font-bold py-2 px-4 rounded btn-left ">
@@ -36,7 +51,7 @@
                       </label>
                     @endif
                     @if($user->isDelete=="yes")
-                    <button  class="btn-outline btn-warning text-white font-bold py-2 px-4 rounded btn-left">
+                    <button  class="invisible btn-outline  btn-ghost text-white font-bold py-2 px-4 rounded btn-left">
                       <i class="fa fa-pen"></i> modifier
                     </button>
                     @endif

@@ -98,8 +98,11 @@ class UserController extends Controller
     }
 
     /* fonction d exportation du fichier csv */
-    public function exportCsv(){
-        return Excel::download(new UsersExport,'users.pdf',\Maatwebsite\Excel\Excel::DOMPDF);
+    public function exportCsv(Request $request){
+        $date_debut = $request->start_date;
+        $date_fin =  $request->end_date;;
+        // dd($date_debut);
+        return Excel::download(new UsersExport($date_debut,$date_fin),'users.pdf',\Maatwebsite\Excel\Excel::DOMPDF);
     }
     
 }
