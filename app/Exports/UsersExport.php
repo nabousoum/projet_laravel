@@ -3,13 +3,15 @@
 namespace App\Exports;
 
 use App\Models\User;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\FromQuery;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 
-class UsersExport implements WithMapping,WithHeadings,FromQuery
+class UsersExport implements WithMapping,WithHeadings,FromQuery,WithStyles
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -43,6 +45,11 @@ class UsersExport implements WithMapping,WithHeadings,FromQuery
             'Email',
             'Crée le'
         ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        $sheet->getStyle(1)->getFont()->setBold(true);
     }
 
    

@@ -25,7 +25,7 @@ class UserController extends Controller
         else{
             $users = User::where('role','=','user')
             ->orderBy('id', 'DESC')
-            ->paginate(10);
+            ->paginate(8);
             return view('dashboard',[
                 'users' => $users,
             ]);
@@ -33,10 +33,15 @@ class UserController extends Controller
     }
 
     /* fonction d ajout d un utilisateur */
-    public function store(Request $request){
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+    public function store(Request $request){    
+       
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users'
+        ], [
+            'name.required' => 'le nom est requis.',
+            'email.required' => 'l email est requis.',
+            'email.email' => 'l email doit etre conforme'
         ]);
 
         $user = User::create([
@@ -102,7 +107,8 @@ class UserController extends Controller
         $date_debut = $request->start_date;
         $date_fin =  $request->end_date;;
         // dd($date_debut);
-        return Excel::download(new UsersExport($date_debut,$date_fin),'users.pdf',\Maatwebsite\Excel\Excel::DOMPDF);
+        //return Excel::download(new UsersExport($date_debut,$date_fin),'users.pdf',\Maatwebsite\Excel\Excel::DOMPDF);
+        return Excel::download(new UsersExport($date_debut,$date_fin),'users.csv');
     }
     
 }
